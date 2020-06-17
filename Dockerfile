@@ -30,8 +30,8 @@ RUN     apt-get update && \
             chmod -v +x /etc/my_init.d/*.sh && \
 			# Enable SSL default vhost
 			a2ensite default-ssl && \
-            # Enable cgid support in apache
-            a2enmod cgid && \
+            # Enable cgid and SSL support in apache
+            a2enmod cgid ssl && \
             sed -i 's/#AddHandler cgi-script .cgi/AddHandler cgi-script .cgi/' /etc/apache2/mods-available/mime.conf && \
             # Adjusting SyslogNG - see https://github.com/phusion/baseimage-docker/pull/223/commits/dda46884ed2b1b0f7667b9cc61a961e24e910784
             sed -ie "s/^       system();$/#      system(); #This is to avoid calls to \/proc\/kmsg inside docker/g" /etc/syslog-ng/syslog-ng.conf
