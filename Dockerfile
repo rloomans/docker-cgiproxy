@@ -16,7 +16,7 @@ ADD     services/ /etc/service/
 
 RUN     apt-get update && \
         apt-get install -y curl perl-modules sudo build-essential vim less \
-            procps ssmtp cron apache2 libapache2-mod-fcgid \
+            procps ssmtp cron apache2 libapache2-mod-perl2 \
             libcrypt-ssleay-perl libnet-ssleay-perl \
             libcompress-raw-lzma-perl libio-compress-lzma-perl libyaml-perl \
             libconfig-yaml-perl fcgiwrap spawn-fcgi libfcgi-perl \
@@ -31,7 +31,7 @@ RUN     apt-get update && \
 			# Enable SSL default vhost
 			a2ensite default-ssl && \
             # Enable cgid and SSL support in apache
-            a2enmod cgid ssl && \
+            a2enmod ssl perl && \
             sed -i 's/#AddHandler cgi-script .cgi/AddHandler cgi-script .cgi/' /etc/apache2/mods-available/mime.conf && \
             # Adjusting SyslogNG - see https://github.com/phusion/baseimage-docker/pull/223/commits/dda46884ed2b1b0f7667b9cc61a961e24e910784
             sed -ie "s/^       system();$/#      system(); #This is to avoid calls to \/proc\/kmsg inside docker/g" /etc/syslog-ng/syslog-ng.conf
