@@ -65,6 +65,8 @@ RUN \
         chmod 0750 /opt/cgiproxy/bin/nph-proxy.cgi && \
         /opt/cgiproxy/bin/nph-proxy.cgi install-modules && \
         /opt/cgiproxy/bin/nph-proxy.cgi create-db && \
+        chown www-data:www-data /opt/cgiproxy/sqlite/* && \
+        chmod 0640 /opt/cgiproxy/sqlite/* && \
         rm -rf /tmp/* /var/tmp/*
 
 WORKDIR /opt/cgiproxy
