@@ -50,8 +50,10 @@ ADD     apache-cgiproxy.conf /etc/apache2/conf-enabled/cgiproxy.conf
 ADD     cgiproxy.cron /etc/cron.d/cgiproxy
 
 RUN \
+        export SECRET_PATH=$(perl -e '@chars = (0..9, q(a)..q(z), q(A)..q(Z), q(_)); print join q(), map $chars[rand @chars], 0..12;') && \
+        perl -pi -E 's{BAD_SECRET_B4M_79PKppfP}{$ENV{SECRET_PATH}}' /opt/cgiproxy/cgiproxy.conf /etc/apache2/conf-enabled/cgiproxy.conf && \
         mkdir /tmp/cgiproxy/ && cd /tmp/cgiproxy/ &&  \
-        curl -L -O http://www.jmarshall.com/tools/cgiproxy/releases/cgiproxy.latest.tar.gz &&  \
+        curl -L -O https://www.jmarshall.com/tools/cgiproxy/releases/cgiproxy.latest.tar.gz &&  \
         tar xvzf cgiproxy.latest.tar.gz &&  \
         tar xvzf cgiproxy-inner.*.tar.gz &&  \
         perl -pi -E 's{^\$PROXY_DIR=.*;$}{\$PROXY_DIR= \x27/opt/cgiproxy\x27 ;}' nph-proxy.cgi && \
