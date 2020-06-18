@@ -13,7 +13,8 @@ ENV     DEBIAN_FRONTEND=noninteractive \
 RUN \
         apt-get update && \
         #apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
-        apt-get install -y curl vim less procps cron
+        apt-get install -y \
+            curl vim less procps cron \
             apache2 libapache2-mod-perl2 \
             perl-modules libcrypt-ssleay-perl libnet-ssleay-perl \
             libcompress-raw-lzma-perl libio-compress-lzma-perl libyaml-perl \
@@ -37,12 +38,10 @@ RUN \
         # Enable SSL default vhost
         a2ensite default-ssl && \
         # Enable mod_perl and SSL support in apache
-        a2enmod ssl perl && \
-        # Adjusting SyslogNG - see https://github.com/phusion/baseimage-docker/pull/223/commits/dda46884ed2b1b0f7667b9cc61a961e24e910784
-        sed -ie "s/^       system();$/#      system(); #This is to avoid calls to \/proc\/kmsg inside docker/g" /etc/syslog-ng/syslog-ng.conf
+        a2enmod ssl perl
 
-ADD     init/ /etc/my_init.d/
-ADD     services/ /etc/service/
+COPY    init/ /etc/my_init.d/
+COPY    services/ /etc/service/
 
 RUN \
         chmod -v +x /etc/service/*/run && \
