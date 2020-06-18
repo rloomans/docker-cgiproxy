@@ -32,7 +32,7 @@ RUN \
 RUN \
         mkdir -m 770 /var/run/cgiproxy/ && \
         chown www-data:www-data /var/run/cgiproxy/ && \
-        mkdir -m 770 /opt/cgiproxy/ /opt/cgiproxy/sqlite /opt/cgiproxy/usage /opt/cgiproxy/releases /opt/cgiproxy/bin && \
+        mkdir -m 770 /opt/cgiproxy/ /opt/cgiproxy/sqlite /opt/cgiproxy/usage /opt/cgiproxy/releases /opt/cgiproxy/bin /opt/cgiproxy/etc && \
         chown -R www-data:www-data /opt/cgiproxy/
 
 RUN \
@@ -48,20 +48,21 @@ RUN \
         chmod -v +x /etc/service/*/run && \
         chmod -v +x /etc/my_init.d/*.sh
 
-COPY    cgiproxy.conf /opt/cgiproxy/cgiproxy.conf
-COPY    apache-cgiproxy.conf /etc/apache2/conf-enabled/cgiproxy.conf.template
+COPY    cgiproxy.conf /opt/cgiproxy/etc/cgiproxy.conf.template
+COPY    apache-cgiproxy.conf /opt/cgiproxy/etc/apache-cgiproxy.conf.template
 COPY    cgiproxy.cron /etc/cron.d/cgiproxy
 
 RUN \
+        ln -s /opt/cgiproxy/etc/cgiproxy.conf /opt/cgiproxy/cgiproxy.conf && \
+        ln -s /opt/cgiproxy/etc/apache-cgiproxy.conf /etc/apache2/conf-enabled/cgiproxy.conf && \
         mkdir /tmp/cgiproxy/ && cd /tmp/cgiproxy/ &&  \
         curl -L -O https://www.jmarshall.com/tools/cgiproxy/releases/cgiproxy.latest.tar.gz &&  \
         tar xvzf cgiproxy.latest.tar.gz &&  \
         tar xvzf cgiproxy-inner.*.tar.gz &&  \
         perl -pi -E 's{^\$PROXY_DIR=.*;$}{\$PROXY_DIR= "/opt/cgiproxy" ;}' nph-proxy.cgi && \
         cp nph-proxy.cgi /opt/cgiproxy/bin/ && \
-        chown root:www-data /opt/cgiproxy/bin/nph-proxy.cgi /opt/cgiproxy/cgiproxy.conf && \
+        chown root:www-data /opt/cgiproxy/bin/nph-proxy.cgi && \
         chmod 0750 /opt/cgiproxy/bin/nph-proxy.cgi && \
-        chmod 0640 /opt/cgiproxy/cgiproxy.conf && \
         /opt/cgiproxy/bin/nph-proxy.cgi install-modules && \
         /opt/cgiproxy/bin/nph-proxy.cgi create-db && \
         rm -rf /tmp/* /var/tmp/*
@@ -73,6 +74,8 @@ EXPOSE 443
 HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
         CMD curl -skL https://localhost/ | \
             grep -qm1 'Start browsing through this CGI-based proxy by entering a URL below'
+
+VOLUME ["/opt/cgiproxy/sqlite", "/opt/cgiproxy/etc"]
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
