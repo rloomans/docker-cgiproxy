@@ -1,7 +1,7 @@
 FROM  phusion/baseimage:master-amd64 as base
 MAINTAINER rloomans, https://github.com/rloomans/docker-cgiproxy
 
-ENV     DEBIAN_FRONTEND=noninteractive \
+ENV \
         HOME="/root" \
         TERM="xterm" \
         APACHE_LOG_DIR="/var/log/apache2" \
@@ -11,10 +11,11 @@ ENV     DEBIAN_FRONTEND=noninteractive \
         LANG=C
 
 RUN \
+        export DEBIAN_FRONTEND=noninteractive && \
         apt-get update && \
         #apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
         apt-get install -y \
-            curl vim less procps cron \
+            curl cron \
             apache2 libapache2-mod-perl2 \
             perl-modules libcrypt-ssleay-perl libnet-ssleay-perl \
             libcompress-raw-lzma-perl libio-compress-lzma-perl libyaml-perl \
