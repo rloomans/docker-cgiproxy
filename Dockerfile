@@ -1,4 +1,4 @@
-FROM  phusion/baseimage:master-amd64 as base
+FROM  phusion/baseimage:master as base
 MAINTAINER rloomans, https://github.com/rloomans/docker-cgiproxy
 
 ENV \
