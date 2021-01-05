@@ -32,8 +32,9 @@ RUN \
 RUN \
         mkdir -m 770 /var/run/cgiproxy/ && \
         chown www-data:www-data /var/run/cgiproxy/ && \
-        mkdir -m 770 /opt/cgiproxy/ /opt/cgiproxy/sqlite /opt/cgiproxy/usage /opt/cgiproxy/releases /opt/cgiproxy/bin /opt/cgiproxy/etc && \
-        chown -R www-data:www-data /opt/cgiproxy/
+        mkdir -m 750 /opt/cgiproxy/ /opt/cgiproxy/sqlite /opt/cgiproxy/bin /opt/cgiproxy/etc && \
+        chmod 0770 /opt/cgiproxy/sqlite && \
+        chown -R root:www-data /opt/cgiproxy/
 
 RUN \
         # Enable SSL default vhost
