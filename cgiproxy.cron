@@ -1,1 +1,1 @@
-13 2 * * * /opt/cgiproxy/bin/nph-proxy.cgi purge-db
+13 2 * * * root /opt/cgiproxy/bin/nph-proxy.cgi purge-db
