@@ -78,10 +78,13 @@ RUN \
 
 WORKDIR /opt/cgiproxy
 
+EXPOSE 80
 EXPOSE 443
 
 HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
         CMD curl -skL https://localhost/ | \
+            grep -qm1 'Start browsing through this CGI-based proxy by entering a URL below' && \
+        CMD curl -sL http://localhost/ | \
             grep -qm1 'Start browsing through this CGI-based proxy by entering a URL below'
 
 VOLUME ["/opt/cgiproxy/sqlite", "/opt/cgiproxy/etc"]
