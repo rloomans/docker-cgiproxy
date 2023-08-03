@@ -1,4 +1,4 @@
-FROM  phusion/baseimage:master as base
+FROM  phusion/baseimage:jammy-1.0.1 as base
 MAINTAINER rloomans, https://github.com/rloomans/docker-cgiproxy
 
 ENV \
@@ -21,7 +21,7 @@ RUN \
         export DEBIAN_FRONTEND=noninteractive && \
         apt-get update && \
         apt-get install -y \
-            curl cron \
+            curl cron tzdata \
             apache2 libapache2-mod-perl2 \
             perl-modules libcrypt-ssleay-perl libnet-ssleay-perl \
             libcompress-raw-lzma-perl libio-compress-lzma-perl libyaml-perl \
@@ -33,7 +33,7 @@ RUN \
             libjson-pp-perl libjson-xs-perl libcpan-meta-perl libdbd-sqlite3 \
             libdbd-sqlite3-perl && \
         apt-get clean && \
-        rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /etc/dpkg/dpkg.cfg.d/02apt-speedup
+        rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
 RUN \
         mkdir -m 770 /var/run/cgiproxy/ && \
