@@ -1,6 +1,8 @@
 FROM  phusion/baseimage:jammy-1.0.1 as base
 MAINTAINER rloomans, https://github.com/rloomans/docker-cgiproxy
 
+ARG APT_HTTP_PROXY
+
 ENV \
         HOME="/root" \
         TERM="xterm" \
@@ -12,13 +14,19 @@ ENV \
 
 RUN \
         export DEBIAN_FRONTEND=noninteractive && \
+        if [ -n "$APT_HTTP_PROXY" ]; then \
+            printf 'Acquire::http::Proxy "%s";\n' "${APT_HTTP_PROXY}" > /etc/apt/apt.conf.d/apt-proxy.conf; \
+        fi && \
         apt-get update && \
         apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
         apt-get clean && \
-        rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+        rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /etc/apt/apt.conf.d/apt-proxy.conf
 
 RUN \
         export DEBIAN_FRONTEND=noninteractive && \
+        if [ -n "$APT_HTTP_PROXY" ]; then \
+            printf 'Acquire::http::Proxy "%s";\n' "${APT_HTTP_PROXY}" > /etc/apt/apt.conf.d/apt-proxy.conf; \
+        fi && \
         apt-get update && \
         apt-get install -y \
             curl cron tzdata \
@@ -33,7 +41,7 @@ RUN \
             libjson-pp-perl libjson-xs-perl libcpan-meta-perl libdbd-sqlite3 \
             libdbd-sqlite3-perl && \
         apt-get clean && \
-        rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+        rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /etc/apt/apt.conf.d/apt-proxy.conf
 
 RUN \
         mkdir -m 770 /var/run/cgiproxy/ && \
