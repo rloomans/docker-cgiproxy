@@ -29,17 +29,34 @@ RUN \
         fi && \
         apt-get update && \
         apt-get install -y \
-            curl cron tzdata \
-            apache2 libapache2-mod-perl2 \
-            perl-modules libcrypt-ssleay-perl libnet-ssleay-perl \
-            libcompress-raw-lzma-perl libio-compress-lzma-perl libyaml-perl \
-            libconfig-yaml-perl fcgiwrap spawn-fcgi libfcgi-perl \
-            libfcgi-procmanager-perl perl-modules libnet-ssleay-perl \
-            libcrypt-ssleay-perl liburi-perl libjson-perl \
-            libjavascript-minifier-xs-perl libperlio-gzip-perl \
-            libmodule-install-perl libmodule-build-perl liblocal-lib-perl \
-            libjson-pp-perl libjson-xs-perl libcpan-meta-perl libdbd-sqlite3 \
-            libdbd-sqlite3-perl && \
+            apache2 \
+            cron \
+            curl \
+            fcgiwrap \
+            libapache2-mod-perl2 \
+            libcompress-raw-lzma-perl \
+            libconfig-yaml-perl \
+            libcpan-meta-perl \
+            libcrypt-ssleay-perl \
+            libdbd-sqlite3 \
+            libdbd-sqlite3-perl \
+            libfcgi-perl \
+            libfcgi-procmanager-perl \
+            libio-compress-lzma-perl \
+            libjavascript-minifier-xs-perl \
+            libjson-perl \
+            libjson-pp-perl \
+            libjson-xs-perl \
+            liblocal-lib-perl \
+            libmodule-build-perl \
+            libmodule-install-perl \
+            libnet-ssleay-perl \
+            libperlio-gzip-perl \
+            liburi-perl \
+            libyaml-perl \
+            perl-modules \
+            spawn-fcgi \
+            tzdata && \
         apt-get clean && \
         rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /etc/apt/apt.conf.d/apt-proxy.conf
 
