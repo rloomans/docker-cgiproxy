@@ -1,0 +1,2 @@
+#!/bin/bash
+exec setuser proxy /cgiproxy/bin/nph-proxy.cgi start-fcgi

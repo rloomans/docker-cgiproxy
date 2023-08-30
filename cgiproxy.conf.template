@@ -1,6 +1,6 @@
 #-----------------------------------------------------------------------
 # CGIProxy 2.2.4 configuration file
-# Script location: /opt/cgiproxy/bin/nph-proxy.cgi
+# Script location: /cgiproxy/bin/nph-proxy.cgi
 # Proxy ID: yRPV6waykBWpfoApjUfv5TrNM80sGrS5Wcbh0
 #-----------------------------------------------------------------------
 # This is a configuration file for CGIProxy 2.2.4 .  It was
@@ -11,7 +11,7 @@
 #   configuration section of nph-proxy.cgi , near the top of the file.
 #   Most configuration variables are fully explained there.
 # You can easily change this configuration by running
-#   "/opt/cgiproxy/bin/nph-proxy.cgi config",
+#   "/cgiproxy/bin/nph-proxy.cgi config",
 #   which presents a menu-based tool to edit each variable in here.  You
 #   can also change the configuration by editing this file directly, but
 #   make sure that whatever you enter here are valid literal values in Perl.
@@ -34,10 +34,10 @@
 #   the command line.
 
 #---- server/network environment configuration ----------------------------
-$RUN_AS_USER= "www-data" ;
-$RUN_AS_GROUP= "www-data" ;
+$RUN_AS_USER= "robert" ;
+$RUN_AS_GROUP= "robert" ;
 $SECRET_PATH= "BAD_SECRET_B4M_79PKppfP" ;
-$LOCAL_LIB_DIR= "/opt/cgiproxy" ;
+$LOCAL_LIB_DIR= "/cgiproxy/perl5" ;
 $RUNNING_ON_SSL_SERVER= "" ;
 $NOT_RUNNING_AS_NPH= 0 ;
 $HTTP_PROXY= undef ;
@@ -53,12 +53,12 @@ $REPORT_USAGE= 0 ;
 
 #---- FastCGI configuration ----------------------------
 $FCGI_SOCKET= 8002 ;
-$FCGI_MAX_REQUESTS_PER_PROCESS= 1000 ;
-$FCGI_NUM_PROCESSES= 100 ;
+$FCGI_MAX_REQUESTS_PER_PROCESS= 100 ;
+$FCGI_NUM_PROCESSES= 10 ;
 
 #---- embedded server configuration ----------------------------
-$CERTIFICATE_FILE= "plain-cert.pem" ;
-$PRIVATE_KEY_FILE= "plain-key.pem" ;
+$CERTIFICATE_FILE= undef ;
+$PRIVATE_KEY_FILE= undef ;
 $EMB_USERNAME= undef ;
 $EMB_PASSWORD= undef ;
 
@@ -81,7 +81,7 @@ $INSERT_ENTRY_FORM= 1 ;
 $ALLOW_USER_CONFIG= 1 ;
 @ALLOWED_SERVERS= () ;
 @BANNED_SERVERS= () ;
-@BANNED_NETWORKS= ('127', '192.168', '172.16-31', '10', '169.254', '244.0.0')	;
+@BANNED_NETWORKS= (127,"192.168",10,"169.254","244.0.0","172.16","172.17","172.18","172.19","172.20","172.21","172.22","172.23","172.24","172.25","172.26","172.27","172.28","172.29","172.30","172.31") ;
 @ALLOWED_COOKIE_SERVERS= () ;
 @BANNED_COOKIE_SERVERS= ("\\.doubleclick\\.net\$","\\.preferences\\.com\$","\\.imgis\\.com\$","\\.adforce\\.com\$","\\.focalink\\.com\$","\\.flycast\\.com\$","\\.avenuea\\.com\$","\\.linkexchange\\.com\$","\\.pathfinder\\.com\$","\\.burstnet\\.com\$","\\btripod\\.com\$","\\bgeocities\\.yahoo\\.com\$","\\.mediaplex\\.com\$") ;
 @ALLOWED_SCRIPT_SERVERS= () ;
@@ -123,4 +123,3 @@ $RESPECT_THREE_DOT_RULE= 0 ;
 $ALERT_ON_CSP_VIOLATION= 0 ;
 %TIMEOUT_MULTIPLIER_BY_HOST= ("www.facebook.com" => 10) ;
 $ALLOW_RTMP_PROXY= 1 ;
-

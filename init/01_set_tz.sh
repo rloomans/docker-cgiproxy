@@ -17,4 +17,6 @@ fi
 
 shift $(( OPTIND - 1 ))
 
-[[ "${TZ:-""}" ]] && timezone "$TZ"
+if [[ "${TZ:-""}" ]]; then
+  timezone "$TZ"
+fi

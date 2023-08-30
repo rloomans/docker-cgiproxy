@@ -1,12 +1,18 @@
 #!/bin/bash
 
-set -o nounset
+set -eo nounset
 
-new_secret=$(perl -e '@chars = (0..9, q(a)..q(z), q(A)..q(Z), q(_)); print join q(), map $chars[rand @chars], 0..12;')
+if [ ! -e /cgiproxy/etc/cgiproxy.conf ]; then
+  if [ -n "$SECRET_PATH" ]; then
+    SECRET_PATH=$(perl -e '@chars = (0..9, q(a)..q(z), q(A)..q(Z), q(_)); print join q(), map $chars[rand @chars], 0..12;')
+  fi
 
-if [ ! -e /opt/etc/cgiproxy.conf -o ! -e /opt/cgiproxy/etc/apache-cgiproxy.conf ]; then
-  perl -p -E 's{^\$SECRET_PATH=.*;\$}{\$SECRET_PATH= "'"$new_secret"'" ;}' /opt/cgiproxy/etc/cgiproxy.conf.template > /opt/cgiproxy/etc/cgiproxy.conf
-  chown root:www-data /opt/cgiproxy/etc/cgiproxy.conf
-  chmod 0640 /opt/cgiproxy/etc/cgiproxy.conf
-  perl -p -E 's{BAD_SECRET_B4M_79PKppfP}{'"$new_secret"'}' /opt/cgiproxy/etc/apache-cgiproxy.conf.template > /opt/cgiproxy/etc/apache-cgiproxy.conf
+  perl -p -E 's{^\$SECRET_PATH=.*;\$}{\$SECRET_PATH= "'"$SECRET_PATH"'" ;}' /cgiproxy/etc/cgiproxy.conf.template > /cgiproxy/etc/cgiproxy.conf
+
+  chown root:proxy /cgiproxy/etc/cgiproxy.conf
+  chmod 0640 /cgiproxy/etc/cgiproxy.conf
+
+  echo "========================================"
+  echo "New secret: $SECRET_PATH"
+  echo "========================================"
 fi
